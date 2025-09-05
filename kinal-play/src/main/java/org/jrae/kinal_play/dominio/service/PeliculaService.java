@@ -1,10 +1,13 @@
-package org.jrae.kinal_play.service;
+package org.jrae.kinal_play.dominio.service;
 
 import org.jrae.kinal_play.dominio.dto.PeliculaDto;
-import org.jrae.kinal_play.repository.PeliculaRepository;
+import org.jrae.kinal_play.dominio.repository.PeliculaRepository;
+import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.GetMapping;
 
 import java.util.List;
 
+@Service
 public class PeliculaService {
 
     private final PeliculaRepository peliculaRepository;
@@ -16,6 +19,10 @@ public class PeliculaService {
 
     public List<PeliculaDto> obtenerTodo(){
         return this.peliculaRepository.obtenerTodo();
+    }
+
+    public PeliculaDto obtenerPeliculaPorCodigo(Long codigo){
+        return this.peliculaRepository.obtenerPeliculaPorCodigo(codigo);
     }
 
 }
