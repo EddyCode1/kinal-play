@@ -7,13 +7,14 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.processing.Generated;
 import org.jrae.kinal_play.dominio.Genre;
+import org.jrae.kinal_play.dominio.dto.ModPeliculaDto;
 import org.jrae.kinal_play.dominio.dto.PeliculaDto;
 import org.jrae.kinal_play.persistence.entity.PeliculaEntity;
 import org.springframework.stereotype.Component;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2025-09-11T10:20:21-0600",
+    date = "2025-09-11T16:17:19-0600",
     comments = "version: 1.6.3, compiler: javac, environment: Java 21.0.5 (Oracle Corporation)"
 )
 @Component
@@ -30,6 +31,7 @@ public class PeliculaMapperImpl implements PeliculaMapper {
         Genre genre = null;
         String releaseDate = null;
         Double rating = null;
+        long codigo = 0L;
 
         name = entity.getNombre();
         if ( entity.getDuracion() != null ) {
@@ -42,8 +44,9 @@ public class PeliculaMapperImpl implements PeliculaMapper {
         if ( entity.getCalificacion() != null ) {
             rating = entity.getCalificacion().doubleValue();
         }
+        codigo = entity.getCodigo();
 
-        PeliculaDto peliculaDto = new PeliculaDto( name, duration, genre, releaseDate, rating );
+        PeliculaDto peliculaDto = new PeliculaDto( codigo, name, duration, genre, releaseDate, rating );
 
         return peliculaDto;
     }
@@ -81,7 +84,24 @@ public class PeliculaMapperImpl implements PeliculaMapper {
         if ( peliculaDto.rating() != null ) {
             peliculaEntity.setCalificacion( BigDecimal.valueOf( peliculaDto.rating() ) );
         }
+        peliculaEntity.setCodigo( peliculaDto.codigo() );
 
         return peliculaEntity;
+    }
+
+    @Override
+    public void modificarEntityFromDto(ModPeliculaDto modPeliculaDto, PeliculaEntity peliculaEntity) {
+        if ( modPeliculaDto == null ) {
+            return;
+        }
+
+        peliculaEntity.setNombre( modPeliculaDto.name() );
+        peliculaEntity.setFechaEstreno( modPeliculaDto.releaseDate() );
+        if ( modPeliculaDto.rating() != null ) {
+            peliculaEntity.setCalificacion( BigDecimal.valueOf( modPeliculaDto.rating() ) );
+        }
+        else {
+            peliculaEntity.setCalificacion( null );
+        }
     }
 }
