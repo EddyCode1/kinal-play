@@ -1,5 +1,7 @@
 package org.jrae.kinal_play.web.mapper;
 
+import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
@@ -11,7 +13,7 @@ import org.springframework.stereotype.Component;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2025-09-05T14:07:21-0600",
+    date = "2025-09-11T10:20:21-0600",
     comments = "version: 1.6.3, compiler: javac, environment: Java 21.0.5 (Oracle Corporation)"
 )
 @Component
@@ -58,5 +60,28 @@ public class PeliculaMapperImpl implements PeliculaMapper {
         }
 
         return list;
+    }
+
+    @Override
+    public PeliculaEntity toEntity(PeliculaDto peliculaDto) {
+        if ( peliculaDto == null ) {
+            return null;
+        }
+
+        PeliculaEntity peliculaEntity = new PeliculaEntity();
+
+        peliculaEntity.setGenero( GenreMapper.generarGenero( peliculaDto.genre() ) );
+        peliculaEntity.setNombre( peliculaDto.name() );
+        if ( peliculaDto.duration() != null ) {
+            peliculaEntity.setDuracion( Integer.parseInt( peliculaDto.duration() ) );
+        }
+        if ( peliculaDto.releaseDate() != null ) {
+            peliculaEntity.setFechaEstreno( LocalDate.parse( peliculaDto.releaseDate() ) );
+        }
+        if ( peliculaDto.rating() != null ) {
+            peliculaEntity.setCalificacion( BigDecimal.valueOf( peliculaDto.rating() ) );
+        }
+
+        return peliculaEntity;
     }
 }

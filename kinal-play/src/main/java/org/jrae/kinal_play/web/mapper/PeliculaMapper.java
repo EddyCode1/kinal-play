@@ -2,6 +2,7 @@ package org.jrae.kinal_play.web.mapper;
 
 import org.jrae.kinal_play.dominio.dto.PeliculaDto;
 import org.jrae.kinal_play.persistence.entity.PeliculaEntity;
+import org.mapstruct.InheritInverseConfiguration;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.springframework.stereotype.Component;
@@ -18,7 +19,11 @@ public interface PeliculaMapper {
     @Mapping(source = "fechaEstreno", target = "releaseDate")
     @Mapping(source = "calificacion", target = "rating")
     public PeliculaDto toDto(PeliculaEntity entity);
-
     public List<PeliculaDto> toDto(Iterable<PeliculaEntity> entities);
+
+    //para convertir DTO --> Entity --> toEntity
+    @InheritInverseConfiguration
+    @Mapping(source = "genre", target = "genero", qualifiedByName = "generarGenero")
+    PeliculaEntity toEntity (PeliculaDto peliculaDto);
 
 }
